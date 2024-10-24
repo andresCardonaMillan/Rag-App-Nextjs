@@ -1,3 +1,5 @@
+import { BurbleChat } from "@/components/BurbleChat";
+import { Chat } from "@/components/Chat";
 import Google from "@/public/icons/Google";
 import { useSession, signIn, signOut } from "next-auth/react"
 
@@ -26,11 +28,14 @@ export default function Home() {
       <img src={session.user.image} className="h-[50px] w-[50px] rounded-full" alt=""/>
       <button onClick={()=> signOut()} className="bg-gray-400 p-2 rounded-md text-white hover:bg-gray-500">Cerrar session</button>
       </div>
-      <div className="flex justify-center pt-4">
-      <h1 className="font-bold text-xl">
+      <div className="flex justify-center">
+      <div className="pt-4 ">
+      <h1 className="font-bold text-xl mb-5">
       Bienvenido {session.user.name},
       ¿que desea averiguar hoy? 
       </h1>
+      <Chat/>
+      </div>
       </div>
     </div>
   );
