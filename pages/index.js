@@ -1,3 +1,5 @@
+import { BurbleChat } from "@/components/BurbleChat";
+import { Chat } from "@/components/Chat";
 import Google from "@/public/icons/Google";
 import { useSession, signIn, signOut } from "next-auth/react"
 
@@ -39,6 +41,7 @@ export default function Home() {
 
       <div className="flex justify-center pt-4">
 
+      <Chat/>
       </div>
     </div>
   );
