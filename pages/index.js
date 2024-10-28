@@ -1,6 +1,6 @@
 import { BurbleChat } from "@/components/BurbleChat";
 import { Chat } from "@/components/Chat";
-import Login from "@/components/Login";
+import Login from "@/pages/login";
 import Google from "@/public/icons/Google";
 import { useSession, signIn, signOut } from "next-auth/react"
 import  Main  from "@/components/Main.jsx";
