@@ -8,7 +8,7 @@ import { UserBurbleChat } from "./UserBurbleChat";
 export function Chat() {
     const [showUploadDocs, setShowUploadDocs] = useState(false);
     const [message, setMessage] = useState("");
-    const [sentMessage, setSentMessage] = useState(""); // Estado para almacenar el mensaje enviado
+    const [sentMessage, setSentMessage] = useState("");
 
     const handleDocsButtonClick = (e) => {
         e.preventDefault(); 
@@ -22,9 +22,9 @@ export function Chat() {
     const handleSendMessage = (e) => {
         e.preventDefault();
         if (message.trim()) {
-            setSentMessage(message); 
-            
-            setMessage(""); // Limpiar el input después de enviar
+            setSentMessage(message);
+            console.log("Mensaje enviado:", message);
+            setMessage("");
         }
     };
 
@@ -38,7 +38,7 @@ export function Chat() {
             ) : (
                 // Muestra solo el componente Chat
                 <div className="bg-gray-200 w-[500px] h-[420px] rounded-xl p-4 flex flex-col gap-3">
-                    <UserBurbleChat message={sentMessage || "..."} /> {/* Usar sentMessage aquí */}
+                    <UserBurbleChat message={sentMessage || "..."} />
                     <BurbleChat />
                     <form className="flex mt-auto" onSubmit={handleSendMessage}>
                         <div className="flex bg-white rounded-xl w-full p-1 gap-1">

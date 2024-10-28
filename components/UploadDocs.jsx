@@ -38,13 +38,13 @@ const UploadDocs = ({ onClose }) => {
     const selectedFile = acceptedFiles[0];
 
     return (
-        <div>
-            <div className="text-3xl justify-center text-center source-code-pro">Mis Documentos</div>
-            <div className="bg-gray-200 w-[500px] h-[500px] rounded-xl p-4">
-                <button onClick={onClose} className="text-gray-400 text-5xl source-code-pro hover:text-gray-700 hover:underline">
+        <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-80 flex flex-col items-center justify-center">
+            <div className="bg-gray-200 w-[500px] h-[500px] rounded-xl p-4 relative">
+                <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 text-2xl hover:text-gray-700 hover:underline">
                     X
                 </button>
-                <form className="text-center">
+                <h2 className="text-3xl justify-center text-center source-code-pro">Mis Documentos</h2>
+                <form className="text-center mt-4">
                     <div
                         className="w-full h-[20vh] border-2 border-dashed border-gray-400 flex justify-center items-center cursor-pointer"
                         {...getRootProps()}
