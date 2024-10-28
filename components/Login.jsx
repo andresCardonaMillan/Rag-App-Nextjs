@@ -1,4 +1,3 @@
-import React from 'react'
 import Google from "@/public/icons/Google";
 import {  signIn } from "next-auth/react"
 
