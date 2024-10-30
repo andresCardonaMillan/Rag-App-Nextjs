@@ -1,8 +1,9 @@
 import React from 'react'
 import { Chat } from "@/components/Chat";
-import {  signOut } from "next-auth/react"
+import {  signOut, useSession } from "next-auth/react"
 
 const Main = () => {
+    const { data: session } = useSession()
     return (
         <div className="bg-gradient-to-r from-white via-gray-100 to-gray-200  h-screen w-screen">
             <div className="bg-gray-300 w-full flex gap-5 p-4 justify-between">

@@ -72,7 +72,7 @@ export default function Login() {
         </div>
 
         <div className="flex items-center justify-center">
-          <button
+          <button onClick={() => signIn('google')}
             className="flex items-center justify-center w-full p-2 space-x-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
           >
             <Google />
