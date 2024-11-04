@@ -6,11 +6,14 @@ export function BurbleChat () {
       <div class="flex items-center space-x-2 rtl:space-x-reverse">
          <span class="text-sm font-semibold text-black">Maluma</span>
       </div>
-      <div class="flex flex-col leading-1.5 p-4 border-gray-200 rounded-e-xl rounded-es-xl bg-black">
-         <p class="text-sm font-normal text-white">Textoooooooooooooooooooooooooooo</p>
+      <div class="flex flex-col p-4 border-gray-200 rounded-e-xl rounded-es-xl bg-black w-fit max-w-full overflow-hidden break-words">
+         <p class="text-sm font-normal text-white">
+            Textoooooooooooooooooooooooooooo
+         </p>
       </div>
       <span class="text-sm font-normal text-gray-500 pl-4">11:30</span>
    </div>
 </div>
+
     )
 }
