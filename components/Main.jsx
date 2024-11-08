@@ -8,7 +8,7 @@ const Main = () => {
             <div className="bg-gray-300 w-full flex gap-5 p-4 justify-between">
                 <div className="flex items-center gap-3">
                     <h1 className="source-code-pro font-semibold text-xl">
-                        Bienvenid@ a RAG JSON´S, {session.user.name}.
+                        Bienvenid@ a RAG JSON´S, {session.user.email}.
                     </h1>
                 </div>
                 <div className="flex items-center gap-3">
