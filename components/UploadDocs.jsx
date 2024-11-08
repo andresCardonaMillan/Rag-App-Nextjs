@@ -11,7 +11,7 @@ const UploadDocs = ({ onClose }) => {
     const [uploadMessage, setUploadMessage] = useState("");
 
     useEffect(() => {
-        localStorage.setItem("uploadedFiles", JSON.stringify(uploadedFiles));
+        sessionStorage.setItem("uploadedFiles", JSON.stringify(uploadedFiles));
     }, [uploadedFiles]);
 
     const onDrop = useCallback((acceptedFiles) => {

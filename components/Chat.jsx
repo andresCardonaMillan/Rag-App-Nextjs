@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 import EnviarIcon from "@/public/icons/Enviar";
 import { BurbleChat } from "./BurbleChat";
 import DocsIcon from "@/public/icons/Documentos";
@@ -9,37 +10,47 @@ export function Chat() {
     const [showUploadDocs, setShowUploadDocs] = useState(false);
     const [message, setMessage] = useState("");
     const [sentMessage, setSentMessage] = useState("");
+    const [responseMessage, setResponseMessage] = useState(""); 
 
     const handleDocsButtonClick = (e) => {
         e.preventDefault(); 
-        setShowUploadDocs(true); // Muestra UploadDocs y oculta Chat
+        setShowUploadDocs(true);
     };
 
     const handleCloseUploadDocs = () => {
-        setShowUploadDocs(false); // Mostrar Chat
+        setShowUploadDocs(false);
     };
 
-    const handleSendMessage = (e) => {
+    const handleSendMessage = async (e) => {
         e.preventDefault();
         if (message.trim()) {
             setSentMessage(message);
-            console.log("Mensaje enviado:", message);
-            setMessage("");
+
+            try {
+                const response = await axios.get("http://127.0.0.1:8001/generate-answer/", {
+                   params:{ query: message}
+                });
+
+                setResponseMessage(response.data); // Almacena la respuesta del backend
+            } catch (error) {
+                console.error("Error al obtener respuesta:", error);
+                setResponseMessage("Error al obtener respuesta");
+            }
+
+            setMessage(""); // Limpia el campo de entrada
         }
     };
 
     return (
         <div className="w-full h-full flex justify-center items-center">
             {showUploadDocs ? (
-                // Muestra solo el componente UploadDocs
                 <div className="bg-gray-200 w-[500px] h-[420px] rounded-xl p-4">
                     <UploadDocs onClose={handleCloseUploadDocs} />
                 </div>
             ) : (
-                // Muestra solo el componente Chat
                 <div className="bg-gray-200 w-[500px] h-[420px] rounded-xl p-4 flex flex-col gap-3">
                     <UserBurbleChat message={sentMessage || "..."} />
-                    <BurbleChat />
+                    <BurbleChat message={responseMessage || "¿Cómo puedo ayudarte hoy?" }/> {/* respuesta en BurbleChat */}
                     <form className="flex mt-auto" onSubmit={handleSendMessage}>
                         <div className="flex bg-white rounded-xl w-full p-1 gap-1">
                             <input
