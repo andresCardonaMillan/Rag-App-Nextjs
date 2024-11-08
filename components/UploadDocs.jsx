@@ -1,10 +1,18 @@
 import { useDropzone } from 'react-dropzone';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import axios from 'axios';
 
 const UploadDocs = ({ onClose }) => {
     const [dataURL, setDataURL] = useState(null);
-    const [uploadedFiles, setUploadedFiles] = useState([]);
+    const [uploadedFiles, setUploadedFiles] = useState(() => {
+        const savedFiles = localStorage.getItem("uploadedFiles");
+        return savedFiles ? JSON.parse(savedFiles) : [];
+    });
     const [uploadMessage, setUploadMessage] = useState("");
+
+    useEffect(() => {
+        sessionStorage.setItem("uploadedFiles", JSON.stringify(uploadedFiles));
+    }, [uploadedFiles]);
 
     const onDrop = useCallback((acceptedFiles) => {
         acceptedFiles.forEach((file) => {
@@ -21,7 +29,7 @@ const UploadDocs = ({ onClose }) => {
 
     const { getRootProps, acceptedFiles, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-    const handleUpload = () => {
+    const handleUpload = async () => {
         if (acceptedFiles.length > 0) {
             setUploadedFiles((prevFiles) => [
                 ...prevFiles,
@@ -31,7 +39,24 @@ const UploadDocs = ({ onClose }) => {
                 }))
             ]);
             setUploadMessage("Documento subido exitosamente!");
-            setTimeout(() => setUploadMessage(""), 3000); // El mensaje desaparece después de 3 segundos
+
+            try {
+                const formData = new FormData();
+                formData.append('file', selectedFile);
+
+                const response = await axios.post("http://127.0.0.1:8001/save-document/", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                });
+
+                console.log("Respuesta del servidor:", response.data);
+            } catch (error) {
+                console.error("Error al subir el documento al servidor:", error);
+                setUploadMessage("Error al subir el documento al servidor.");
+            }
+
+            setTimeout(() => setUploadMessage(""), 3000);
         }
     };
 
@@ -81,17 +106,20 @@ const UploadDocs = ({ onClose }) => {
                             onClick={handleUpload}
                             className="bg-gray-400 hover:bg-gray-500 rounded-full source-code-pro p-1"
                         >
-                            SUBIR DOCUMENTOS
+                            SUBIR DOCUMENTO
                         </button>
                         {uploadMessage && <p className="text-green-500 font-semibold">{uploadMessage}</p>}
                     </div>
                 </form>
 
-                {/* Vista previa de los documentos subidos */}
                 {uploadedFiles.length > 0 && (
                     <div className="mt-4">
                         <h2 className="text-xl font-semibold text-gray-700">Documentos Subidos</h2>
-                        <ul className="mt-2 space-y-2">
+                        <ul className="mt-2 space-y-2 max-h-32 overflow-y-auto 
+                                       [&::-webkit-scrollbar]:w-2
+                                       [&::-webkit-scrollbar-track]:bg-gray-200
+                                       [&::-webkit-scrollbar-thumb]:bg-gray-500
+                                       [&::-webkit-scrollbar-thumb]:rounded-full">
                             {uploadedFiles.map((file, index) => (
                                 <li key={index} className="flex items-center space-x-4">
                                     <a
