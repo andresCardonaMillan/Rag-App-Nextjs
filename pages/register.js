@@ -1,5 +1,8 @@
+'use client'
+
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { registerUser } from './api/auth/register';
 
 export default function Register() {
   const [email, setEmail] = useState('');
@@ -7,36 +10,63 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const router = useRouter();
 
+  // const handleRegister = async (e) => {
+  //   e.preventDefault();
+
+  //   console.log('Formulario enviado', { email, password }); // Verificar valores capturados
+
+  //   // Validación simple de contraseñas
+  //   if (password !== confirmPassword) {
+  //     alert('Las contraseñas no coinciden');
+  //     return;
+  //   }
+
+  //   console.log('Intentando registrar usuario...');
+
+  //   // Lógica de registro usando la función registerUser
+  //   try {
+  //     const response = await registerUser(email, password);
+  //     console.log('Respuesta de la API:', response); // Verificar la respuesta de la API
+
+  //     // Asegúrate de que estás revisando el objeto de respuesta correctamente
+  //     if (response.success) {
+  //       alert(response.message); // Mensaje de éxito
+  //       router.push('/'); // Redirige a la página de inicio o de login después del registro
+  //     } else {
+  //       alert('Error en el registro: ' + response.message); // Mensaje de error
+  //     }
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //     alert('Error en el registro: ' + error.message);
+  //   }
+  // };
   const handleRegister = async (e) => {
     e.preventDefault();
-
+  
     // Validación simple de contraseñas
     if (password !== confirmPassword) {
       alert('Las contraseñas no coinciden');
       return;
     }
-
-    // Lógica de registro
+  
     try {
-      const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (res.ok) {
-        alert('Registro exitoso');
-        router.push('/'); // Redirige a la página de inicio o de login después del registro
+      const response = await registerUser(email, password);
+      console.log('Respuesta de la API:', response); // Verificar la respuesta de la API
+  
+      if (response.success) {
+        alert(response.message); // Mensaje de éxito
+  
+        // Redirigir al chat (asumiendo que la ruta es /chat)
+        router.push('/chat');
       } else {
-        alert('Error en el registro');
+        alert('Error en el registro: ' + response.message); // Mensaje de error
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('Error en el registro');
+      alert('Error en el registro: ' + error.message); // Mensaje de error adecuado
     }
   };
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-blue-200">
