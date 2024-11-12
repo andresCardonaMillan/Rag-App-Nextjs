@@ -10,36 +10,6 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const router = useRouter();
 
-  // const handleRegister = async (e) => {
-  //   e.preventDefault();
-
-  //   console.log('Formulario enviado', { email, password }); // Verificar valores capturados
-
-  //   // Validación simple de contraseñas
-  //   if (password !== confirmPassword) {
-  //     alert('Las contraseñas no coinciden');
-  //     return;
-  //   }
-
-  //   console.log('Intentando registrar usuario...');
-
-  //   // Lógica de registro usando la función registerUser
-  //   try {
-  //     const response = await registerUser(email, password);
-  //     console.log('Respuesta de la API:', response); // Verificar la respuesta de la API
-
-  //     // Asegúrate de que estás revisando el objeto de respuesta correctamente
-  //     if (response.success) {
-  //       alert(response.message); // Mensaje de éxito
-  //       router.push('/'); // Redirige a la página de inicio o de login después del registro
-  //     } else {
-  //       alert('Error en el registro: ' + response.message); // Mensaje de error
-  //     }
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //     alert('Error en el registro: ' + error.message);
-  //   }
-  // };
   const handleRegister = async (e) => {
     e.preventDefault();
   

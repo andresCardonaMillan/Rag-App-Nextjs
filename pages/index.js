@@ -4,6 +4,8 @@ import Login from "@/pages/login";
 import Google from "@/public/icons/Google";
 import { useSession, signIn, signOut } from "next-auth/react"
 import  Main  from "@/components/Main.jsx";
+import AdminDashboard from "./adminView";
+
 
 
 export default function Home() {
@@ -16,6 +18,6 @@ export default function Home() {
   }
   //si el usuario ya se registro
   return (
-     <Main />
+     <AdminDashboard /> //antes estaba Main
   );
 }
