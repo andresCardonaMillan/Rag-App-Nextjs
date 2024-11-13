@@ -18,40 +18,26 @@ export default NextAuth({
       },
       authorize: async (credentials) => {
         try {
-          // Hacer la solicitud de autenticación al backend
           const res = await fetch(
             `http://127.0.0.1:8001/login/?email=${encodeURIComponent(credentials.email)}&password=${encodeURIComponent(credentials.password)}`,
-            {
-              method: 'GET',
-            }
+            { method: 'GET' }
           );
-      
-          if (!res.ok) {
-            throw new Error('Credenciales inválidas');
-          }
-      
-          const response = await res.json();
-          if (response.status === 'User logged in successfully') {
-            console.log('Usuario autenticado exitosamente');
-      
-            // Crear un objeto de usuario "mock"
-            const mockUser = {
-              id: credentials.email, // Usar el correo como identificador único si no tienes un ID real
-              name: credentials.email.split('@')[0], // Derivar el nombre del correo electrónico
-              email: credentials.email,
-              image: credentials.image
-            };
-      
-            return mockUser; // Retorna el usuario con los datos que puedas proporcionar
-          } else {
-            return null; // En caso de que la autenticación falle
-          }
+
+          if (!res.ok) throw new Error('Credenciales inválidas');
+
+          const loginResponse = await res.json();
+          if (loginResponse.status !== 'User logged in successfully') return null;
+
+          return {
+            id: credentials.email,
+            name: credentials.email.split('@')[0],
+            email: credentials.email,
+          };
         } catch (error) {
-          console.error('Error de inicio de sesión:', error);
+          console.error('Error en la autenticación:', error);
           return null;
         }
-      }
-      
+      },
     }),
   ],
   adapter: MongoDBAdapter(client),
@@ -59,29 +45,45 @@ export default NextAuth({
     signIn: '/login',
   },
   session: {
-    strategy: 'jwt', // Usamos JWT como estrategia de sesión
+    strategy: 'jwt',
   },
   callbacks: {
-    async session({ session, token }) {
-
-      // Almacenamos el email y otros datos del token en la sesión
-      session.user = {
-        id: token.id,
-        email: token.email,
-        name: token.name,  // Puedes agregar más datos según sea necesario
-      };
-      return session;
-    },
-
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.email = user.email;  // Almacenamos el correo en el token
-        token.name = user.name;    // Almacenamos el nombre si es necesario
+        token.email = user.email;
+        token.name = user.name;
       }
 
+      // Obtener el rol del usuario si aún no está en el token
+      if (!token.role && token.email) {
+        try {
+          const res = await fetch('http://127.0.0.1:8001/get-all-users/');
+          const data = await res.json();
+          const userFromDb = data.users.find((u) => u.email === token.email);
+
+          if (userFromDb) {
+            token.role = userFromDb.rol;
+          } else {
+            token.role = 'user';
+          }
+        } catch (error) {
+          console.error('Error obteniendo el rol del usuario:', error);
+          token.role = 'user';
+        }
+      }
 
       return token;
+    },
+
+    async session({ session, token }) {
+      session.user = {
+        id: token.id,
+        email: token.email,
+        name: token.name,
+        role: token.role,
+      };
+      return session;
     },
   },
 });
