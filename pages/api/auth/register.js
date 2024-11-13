@@ -1,6 +1,7 @@
 // api/auth/register.js
 import axios from 'axios';
 
+
 export async function registerUser(email, password) {
   try {
     const response = await axios.post(`http://127.0.0.1:8001/register/?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
