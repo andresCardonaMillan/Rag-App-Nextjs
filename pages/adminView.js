@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { getAllUsers, changeUserRole } from './api/change-rol';
 
-export default function AdminDashboard() {
+export default function AdminDashboard({ setShowAdmin }) {
   const [userList, setUserList] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -49,6 +49,13 @@ export default function AdminDashboard() {
     <div className="container mx-auto p-6">
       <header className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Panel de Control de Administrador</h1>
+        {/* Botón para volver */}
+        <button
+          onClick={() => setShowAdmin(false)}  // Cambiar el estado para volver
+          className="bg-gray-500 text-white p-2 rounded-md hover:bg-gray-600"
+        >
+          Volver
+        </button>
       </header>
 
       <div className="mb-6 relative">
@@ -115,4 +122,3 @@ export default function AdminDashboard() {
     </div>
   );
 }
-

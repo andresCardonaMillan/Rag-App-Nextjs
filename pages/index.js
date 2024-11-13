@@ -1,23 +1,26 @@
-import { BurbleChat } from "@/components/BurbleChat";
-import { Chat } from "@/components/Chat";
-import Login from "@/pages/login";
-import Google from "@/public/icons/Google";
-import { useSession, signIn, signOut } from "next-auth/react"
-import  Main  from "@/components/Main.jsx";
+import { useState } from 'react';
+import Main from "@/components/Main";
 import AdminDashboard from "./adminView";
-
-
+import { useSession } from "next-auth/react";
+import Login from "@/pages/login";
 
 export default function Home() {
-  const { data: session } = useSession()
-  //si el usuario no ha iniciado session
+  const { data: session } = useSession();
+  const [showAdmin, setShowAdmin] = useState(false);
+
+  // Si el usuario no ha iniciado sesión
   if (!session) {
-    return (
-      <Login />
-    );
+    return <Login />;
   }
-  //si el usuario ya se registro
+
   return (
-     <AdminDashboard /> //antes estaba Main
+    <div>
+      {/* Mostrar Main cuando showAdmin sea false */}
+      {!showAdmin ? (
+        <Main setShowAdmin={setShowAdmin} />
+      ) : (
+        <AdminDashboard setShowAdmin={setShowAdmin} />
+      )}
+    </div>
   );
 }
