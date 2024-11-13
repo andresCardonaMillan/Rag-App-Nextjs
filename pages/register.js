@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/router';
@@ -10,69 +10,29 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const router = useRouter();
 
-  // const handleRegister = async (e) => {
-  //   e.preventDefault();
-
-  //   console.log('Formulario enviado', { email, password }); // Verificar valores capturados
-
-  //   // Validación simple de contraseñas
-  //   if (password !== confirmPassword) {
-  //     alert('Las contraseñas no coinciden');
-  //     return;
-  //   }
-
-  //   console.log('Intentando registrar usuario...');
-
-  //   // Lógica de registro usando la función registerUser
-  //   try {
-  //     const response = await registerUser(email, password);
-  //     console.log('Respuesta de la API:', response); // Verificar la respuesta de la API
-
-  //     // Asegúrate de que estás revisando el objeto de respuesta correctamente
-  //     if (response.success) {
-  //       alert(response.message); // Mensaje de éxito
-  //       router.push('/'); // Redirige a la página de inicio o de login después del registro
-  //     } else {
-  //       alert('Error en el registro: ' + response.message); // Mensaje de error
-  //     }
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //     alert('Error en el registro: ' + error.message);
-  //   }
-  // };
   const handleRegister = async (e) => {
     e.preventDefault();
-  
-    // Validación simple de contraseñas
+
     if (password !== confirmPassword) {
       alert('Las contraseñas no coinciden');
       return;
     }
-  
-    try {
-      const response = await registerUser(email, password);
-      console.log('Respuesta de la API:', response); // Verificar la respuesta de la API
-  
-      if (response.success) {
-        alert(response.message); // Mensaje de éxito
-  
-        // Redirigir al chat (asumiendo que la ruta es /chat)
-        router.push('/chat');
-      } else {
-        alert('Error en el registro: ' + response.message); // Mensaje de error
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error en el registro: ' + error.message); // Mensaje de error adecuado
+
+    // Llamada a la función de registro
+    const response = await registerUser(email, password);
+
+    if (response.success) {
+      alert(response.message);
+      router.push('/login');  // Redirige a login o donde prefieras tras el registro exitoso
+    } else {
+      alert('Error en el registro: ' + response.message);
     }
   };
-  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-blue-200">
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center">Regístrate en RAG</h2>
-
         <form className="space-y-4" onSubmit={handleRegister}>
           <div>
             <label className="block text-sm font-medium text-gray-700">Correo Electrónico</label>
@@ -85,7 +45,6 @@ export default function Register() {
               placeholder="Ingresa tu correo"
             />
           </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700">Contraseña</label>
             <input
@@ -97,7 +56,6 @@ export default function Register() {
               placeholder="Ingresa tu contraseña"
             />
           </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700">Confirmar Contraseña</label>
             <input
@@ -109,7 +67,6 @@ export default function Register() {
               placeholder="Confirma tu contraseña"
             />
           </div>
-
           <button
             type="submit"
             className="w-full py-2 font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-200"
@@ -117,10 +74,9 @@ export default function Register() {
             Registrarse
           </button>
         </form>
-
         <div className="flex items-center justify-center pt-4">
           <button
-            onClick={() => router.push('/')}
+            onClick={() => router.push('/login')}
             className="text-sm font-medium text-blue-600 hover:underline focus:outline-none"
           >
             ¿Ya tienes una cuenta? Inicia sesión
