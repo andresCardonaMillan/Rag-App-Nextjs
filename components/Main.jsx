@@ -12,7 +12,8 @@ const Main = () => {
                     </h1>
                 </div>
                 <div className="flex items-center gap-3">
-                    <img src={session.user.image} className="h-[50px] w-[50px] rounded-full mr-2 gap-2" alt="" />
+                    <img src={session?.user?.image || 'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg'} 
+                    className="h-[50px] w-[50px] rounded-full border  mr-2 gap-2" alt="" />
                     <button onClick={() => signOut()} className="source-code-pro bg-gray-400 p-2 rounded-md text-black hover:underline hover:bg-gray-500 hover:text-white">
                         Cerrar sesión
                     </button>
